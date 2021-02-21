@@ -1,0 +1,6 @@
+selectorlib
+selenium
+beautifulsoup4
+tqdm
+requests
+python-dateutil

@@ -131,5 +131,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+.vscode/
+
 .csv
 .exe
