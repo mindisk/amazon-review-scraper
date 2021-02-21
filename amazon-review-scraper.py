@@ -155,6 +155,5 @@ with open("products.txt", 'r') as urllist:
 
     # Iterate over teh rest of the lines which are products.
     for product_asin in urllist.readlines():
-        review_scraper = amazon_review_scraper(
-            amazon_site="amazon.com", product_asin=product_asin.strip(), sleep_time=3, end_page=2)
+        review_scraper = amazon_review_scraper(amazon_site="amazon.com", product_asin=product_asin.strip(), sleep_time=3, end_page=2)
         review_scraper.scrape()
