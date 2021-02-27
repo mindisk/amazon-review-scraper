@@ -108,19 +108,22 @@ class amazon_review_scraper:
         data = extractor.extract(page_html)
         if data:
             for review in data['reviews']:
+                if review == None:
+                    continue                
                 review["product"] = data["product_title"]
                 review['url'] = url
                 if 'verified' in review:
-                    if 'Verified Purchase' in review['verified']:
+                    if review['verified'] != None and 'Verified Purchase' in review['verified']:
                         review['verified'] = 'Yes'
                     else:
-                        review['verified'] = 'Yes'
-                review['rating'] = review['rating'].split(' out of')[0]
-                date_posted = review['date'].split('on ')[-1]
+                        review['verified'] = 'No'
+                if review['rating'] != None:         
+                    review['rating'] = review['rating'].split(' out of')[0]
+                if review['date'] != None:
+                    date_posted = review['date'].split('on ')[-1]
                 if review['images']:
                     review['images'] = "\n".join(review['images'])
-                review['date'] = dateparser.parse(
-                    date_posted).strftime('%d %b %Y')
+                review['date'] = dateparser.parse(date_posted).strftime('%d %b %Y')
                 writer.writerow(review)
 
     def request_wrapper(self, url):
@@ -155,5 +158,6 @@ with open("products.txt", 'r') as urllist:
 
     # Iterate over teh rest of the lines which are products.
     for product_asin in urllist.readlines():
-        review_scraper = amazon_review_scraper(amazon_site="amazon.com", product_asin=product_asin.strip(), sleep_time=3, end_page=2)
+        review_scraper = amazon_review_scraper(
+            amazon_site="amazon.com", product_asin=product_asin.strip(), sleep_time=1)
         review_scraper.scrape()
